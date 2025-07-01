@@ -1,0 +1,45 @@
+<h1>Случайная цитата</h1>
+
+{% if quote %}
+    <blockquote>
+        {{ quote.text }}
+    </blockquote>
+    <p><strong>Источник:</strong> {{ quote.source }}</p>
+    <p><strong>Просмотров:</strong> {{ quote.views }}</p>
+    <p>
+        <button onclick="vote('like')">👍 <span id="like-count">{{ quote.likes }}</span></button>
+        <button onclick="vote('dislike')">👎 <span id="dislike-count">{{ quote.dislikes }}</span></button>
+    </p>
+    <p><a href="{% url 'add_quote' %}">Добавить новую цитату</a></p>
+
+    <script>
+      function vote(type) {
+        const key = `voted_{{ quote.id }}`;
+        if (localStorage.getItem(key)) {
+            alert("Вы уже голосовали за эту цитату.");
+            return;
+        }
+
+        fetch(`/${type}/{{ quote.id }}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (type === 'like') {
+                document.getElementById('like-count').innerText = data.likes;
+            } else {
+                document.getElementById('dislike-count').innerText = data.dislikes;
+            }
+            localStorage.setItem(key, type); 
+        });
+      }
+  </script>
+{% else %}
+    <p>Цитаты не найдены.</p>
+{% endif %}
+
+<p><a href="{% url 'top_quotes' %}">Топ-10 цитат</a></p>
+
