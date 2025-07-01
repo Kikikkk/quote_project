@@ -1,0 +1,15 @@
+<h1>Топ-10 цитат по лайкам</h1>
+
+{% for quote in quotes %}
+    <div style="margin-bottom: 20px;">
+        <blockquote>
+            {{ quote.text }}
+        </blockquote>
+        <p><strong>Источник:</strong> {{ quote.source }}</p>
+        <p>👍 {{ quote.likes }} | 👎 {{ quote.dislikes }} | 👁 {{ quote.views }}</p>
+    </div>
+{% empty %}
+    <p>Нет цитат для отображения.</p>
+{% endfor %}
+
+<p><a href="{% url 'home' %}">Вернуться на главную</a></p>

@@ -43,3 +43,8 @@ def dislike_quote(request, quote_id):
         except Quote.DoesNotExist:
             raise Http404
     return JsonResponse({'error': 'Invalid method'}, status=405)
+
+def top_quotes(request):
+    quotes = Quote.objects.order_by('-likes')[:10]
+    return render(request, 'quotes/top_quotes.html', {'quotes': quotes})
+
