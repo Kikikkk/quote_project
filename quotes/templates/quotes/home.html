@@ -1,19 +1,33 @@
-<h1>Случайная цитата</h1>
+{% extends 'quotes/base.html' %}
+
+{% block title %}Случайная цитата{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Случайная цитата</h1>
 
 {% if quote %}
-    <blockquote>
-        {{ quote.text }}
-    </blockquote>
-    <p><strong>Источник:</strong> {{ quote.source }}</p>
-    <p><strong>Просмотров:</strong> {{ quote.views }}</p>
-    <p>
-        <button onclick="vote('like')">👍 <span id="like-count">{{ quote.likes }}</span></button>
-        <button onclick="vote('dislike')">👎 <span id="dislike-count">{{ quote.dislikes }}</span></button>
-    </p>
-    <p><a href="{% url 'add_quote' %}">Добавить новую цитату</a></p>
+    <div class="card mb-3">
+        <div class="card-body">
+            <blockquote class="blockquote mb-2">
+                {{ quote.text }}
+            </blockquote>
+            <p><strong>Источник:</strong> {{ quote.source }}</p>
+            <p><strong>Просмотров:</strong> {{ quote.views }}</p>
 
-    <script>
-      function vote(type) {
+            <div>
+                <button class="btn btn-success me-2" onclick="vote('like')">👍 <span id="like-count">{{ quote.likes }}</span></button>
+                <button class="btn btn-danger" onclick="vote('dislike')">👎 <span id="dislike-count">{{ quote.dislikes }}</span></button>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <p>Цитаты не найдены.</p>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function vote(type) {
         const key = `voted_{{ quote.id }}`;
         if (localStorage.getItem(key)) {
             alert("Вы уже голосовали за эту цитату.");
@@ -33,13 +47,8 @@
             } else {
                 document.getElementById('dislike-count').innerText = data.dislikes;
             }
-            localStorage.setItem(key, type); 
+            localStorage.setItem(key, type);
         });
-      }
-  </script>
-{% else %}
-    <p>Цитаты не найдены.</p>
-{% endif %}
-
-<p><a href="{% url 'top_quotes' %}">Топ-10 цитат</a></p>
-
+    }
+</script>
+{% endblock %}

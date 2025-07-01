@@ -1,19 +1,25 @@
+{% extends 'quotes/base.html' %}
+
+{% block title %}Топ-10 цитат по {{ sort }}{% endblock %}
+
+{% block content %}
 <h1>Топ-10 цитат по {{ sort }}</h1>
 
 <p>Сортировать по: 
-    <a href="?sort=likes">Лайки</a> | 
-    <a href="?sort=dislikes">Дизлайки</a> | 
-    <a href="?sort=views">Просмотры</a>
+    <a href="?sort=likes" class="btn btn-outline-primary btn-sm me-1">Лайки</a>
+    <a href="?sort=dislikes" class="btn btn-outline-primary btn-sm me-1">Дизлайки</a>
+    <a href="?sort=views" class="btn btn-outline-primary btn-sm">Просмотры</a>
 </p>
 
 {% for quote in quotes %}
-    <div style="margin-bottom: 20px;">
-        <blockquote>{{ quote.text }}</blockquote>
-        <p><strong>Источник:</strong> {{ quote.source }}</p>
-        <p>👍 {{ quote.likes }} | 👎 {{ quote.dislikes }} | 👁 {{ quote.views }}</p>
+    <div class="card mb-3">
+        <div class="card-body">
+            <blockquote class="blockquote mb-2">{{ quote.text }}</blockquote>
+            <p><strong>Источник:</strong> {{ quote.source }}</p>
+            <p>👍 {{ quote.likes }} | 👎 {{ quote.dislikes }} | 👁 {{ quote.views }}</p>
+        </div>
     </div>
 {% empty %}
     <p>Нет цитат для отображения.</p>
 {% endfor %}
-
-<p><a href="{% url 'home' %}">Вернуться на главную</a></p>
+{% endblock %}
