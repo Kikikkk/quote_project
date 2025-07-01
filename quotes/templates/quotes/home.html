@@ -1,0 +1,12 @@
+<h1>Случайная цитата</h1>
+
+{% if quote %}
+    <blockquote>
+        {{ quote.text }}
+    </blockquote>
+    <p><strong>Источник:</strong> {{ quote.source }}</p>
+    <p><strong>Просмотров:</strong> {{ quote.views }}</p>
+    <p><a href="{% url 'add_quote' %}">Добавить новую цитату</a></p>
+{% else %}
+    <p>Цитаты не найдены.</p>
+{% endif %}
