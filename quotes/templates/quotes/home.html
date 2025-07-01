@@ -13,23 +13,30 @@
     <p><a href="{% url 'add_quote' %}">Добавить новую цитату</a></p>
 
     <script>
-        function vote(type) {
-            fetch(`/${type}/{{ quote.id }}/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (type === 'like') {
-                    document.getElementById('like-count').innerText = data.likes;
-                } else {
-                    document.getElementById('dislike-count').innerText = data.dislikes;
-                }
-            });
+      function vote(type) {
+        const key = `voted_{{ quote.id }}`;
+        if (localStorage.getItem(key)) {
+            alert("Вы уже голосовали за эту цитату.");
+            return;
         }
-    </script>
+
+        fetch(`/${type}/{{ quote.id }}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (type === 'like') {
+                document.getElementById('like-count').innerText = data.likes;
+            } else {
+                document.getElementById('dislike-count').innerText = data.dislikes;
+            }
+            localStorage.setItem(key, type); 
+        });
+      }
+  </script>
 {% else %}
     <p>Цитаты не найдены.</p>
 {% endif %}
