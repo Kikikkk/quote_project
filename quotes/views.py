@@ -45,6 +45,8 @@ def dislike_quote(request, quote_id):
     return JsonResponse({'error': 'Invalid method'}, status=405)
 
 def top_quotes(request):
-    quotes = Quote.objects.order_by('-likes')[:10]
-    return render(request, 'quotes/top_quotes.html', {'quotes': quotes})
-
+    sort = request.GET.get('sort', 'likes')
+    if sort not in ['likes', 'dislikes', 'views']:
+        sort = 'likes'
+    quotes = Quote.objects.order_by(f'-{sort}')[:10]
+    return render(request, 'quotes/top_quotes.html', {'quotes': quotes, 'sort': sort})
