@@ -27,7 +27,14 @@
 
 {% block scripts %}
 <script>
+    const isAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
+
     function vote(type) {
+        if (!isAuthenticated) {
+            alert("Пожалуйста, войдите или зарегистрируйтесь, чтобы голосовать.");
+            return;
+        }
+
         fetch(`/${type}/{{ quote.id }}/`, {
             method: 'POST',
             headers: {
