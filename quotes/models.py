@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Quote(models.Model):
     text = models.TextField(unique=True)
@@ -15,3 +16,16 @@ class Quote(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['text'], name='unique_quote_text')
         ]
+
+class Vote(models.Model):
+    VOTE_CHOICES = [
+        ('like', 'Like'),
+        ('dislike', 'Dislike')
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quote = models.ForeignKey(Quote, on_delete=models.CASCADE)
+    vote_type = models.CharField(max_length=7, choices=VOTE_CHOICES)
+
+    class Meta:
+        unique_together = ('user', 'quote')

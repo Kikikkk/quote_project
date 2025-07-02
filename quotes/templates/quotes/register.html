@@ -1,0 +1,15 @@
+{% extends 'quotes/base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<h1>Регистрация</h1>
+<form method="post" class="mt-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
+<p class="mt-2">
+    Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+</p>
+{% endblock %}

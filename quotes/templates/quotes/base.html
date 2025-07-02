@@ -16,8 +16,17 @@
                 <a class="btn btn-light btn-sm" href="{% url 'top_quotes' %}">Топ-цитат</a>
             </div>
         </div>
+        {% if user.is_authenticated %}
+          <span class="text-light me-3">Привет, {{ user.username }}!</span>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light btn-sm">Выйти</button>
+          </form>
+        {% else %}
+          <a class="btn btn-outline-light btn-sm me-2" href="{% url 'login' %}">Войти</a>
+          <a class="btn btn-outline-light btn-sm" href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
     </nav>
-
     <div class="container">
         {% block content %}
         {% endblock %}

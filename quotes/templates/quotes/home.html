@@ -28,12 +28,6 @@
 {% block scripts %}
 <script>
     function vote(type) {
-        const key = `voted_{{ quote.id }}`;
-        if (localStorage.getItem(key)) {
-            alert("Вы уже голосовали за эту цитату.");
-            return;
-        }
-
         fetch(`/${type}/{{ quote.id }}/`, {
             method: 'POST',
             headers: {
@@ -42,12 +36,8 @@
         })
         .then(response => response.json())
         .then(data => {
-            if (type === 'like') {
-                document.getElementById('like-count').innerText = data.likes;
-            } else {
-                document.getElementById('dislike-count').innerText = data.dislikes;
-            }
-            localStorage.setItem(key, type);
+            document.getElementById('like-count').innerText = data.likes;
+            document.getElementById('dislike-count').innerText = data.dislikes;
         });
     }
 </script>
